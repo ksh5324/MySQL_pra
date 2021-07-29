@@ -1,0 +1,57 @@
+USE tabledb;
+CREATE TABLE usertbl
+( userID CHAR(8) NOT NULL PRIMARY KEY,
+  name1 VARCHAR(10) NOT NULL,
+  birthYear INT NOT NULL,
+  addr CHAR(2) NOT NULL,
+  mobile1 CHAR(3) NULL,
+  mobile2 CHAR(8) NULL,
+  height SMALLINT NULL,
+  mDate DATE NULL
+);
+
+CREATE TABLE buytbl
+( num1 INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  userID CHAR(8) NOT NULL,
+  prodName CHAR(4) NULL,
+  price INT NOT NULL,
+  amount SMALLINT NOT NULL,
+  FOREIGN KEY(userID) REFERENCES usertbl(userID)
+);
+
+INSERT INTO usertbl VALUES ('LSG','이승기',1987,'서울','011','11111111',182,'2008-8-8');
+INSERT INTO usertbl VALUES ('KBS','김범수',1979,'경남','011','22222222',173,'2012-4-4');
+INSERT INTO usertbl VALUES ('KKH','김경호',1971,'전남','019','33333333',177,'2007-7-7');
+
+INSERT INTO buytbl VALUES (NULL, 'KBS', '운동화', NULL, 30, 2);
+INSERT INTO buytbl VALUES (NULL, 'KBS', '노트북', '전자', 1000, 1);
+-- INSERT INTO buytbl VALUES (NULL, 'JYP', '전자', 200, 1); 오류 아직 회원 테이블에 JYP가 없기 때문
+
+USE tabledb;
+CREATE TABLE test
+( a CHAR(8) NOT NULL PRIMARY KEY,
+  b CHAR(12) NOT NULL,
+  c INT NOT NULL
+);
+
+USE tabledb;
+DROP TABLE IF EXISTS test;
+CREATE TABLE test
+( a CHAR(8) NOT NULL,
+  b CHAR(12) NOT NULL,
+  c INT NOT NULL,
+  CONSTRAINT PRIMARY KEY PK_userTBL_userID (a)
+);
+
+USE tabledb;
+DROP TABLE IF EXISTS test;
+CREATE TABLE test
+( a CHAR(8) NOT NULL,
+  b CHAR(12) NOT NULL,
+  c INT NOT NULL,
+);
+
+ALTER TABLE test
+	ADD CONSTRAINT PK_test_a
+    PRIMARY KEY (a);
+
