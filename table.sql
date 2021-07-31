@@ -55,3 +55,116 @@ ALTER TABLE test
 	ADD CONSTRAINT PK_test_a
     PRIMARY KEY (a);
 
+SHOW KEYS FROM test;
+
+USE tabledb;
+CREATE TABLE test2
+( userID CHAR(8) NOT NULL PRIMARY KEY,
+  name1 VARCHAR(10) NOT NULL,
+  birthYear INT NOT NULL
+);
+CREATE TABLE test3
+( num1 INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  userID CHAR(8) NOT NULL,
+  prodName CHAR(6) NOT NULL,
+  FOREIGN KEY (userID) REFERENCES test2(userID)
+);
+
+DROP TABLE IF EXISTS test3;
+CREATE TABLE test3
+( num1 INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  userID CHAR(8) NOT NULL,
+  prodName CHAR(6) NOT NULL,
+  CONSTRAINT FK_test3_test2 FOREIGN KEY(userID) REFERENCES test(userID)
+);
+
+DROP TABLE IF EXISTS test3;
+CREATE TABLE test3
+( num1 INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  userID CHAR(8) NOT NULL,
+  prodName CHAR(6) NOT NULL,
+);
+
+ALTER TABLE test3
+ADD CONSTRAINT FK_test2_test3
+FOREIGN KEY (userID) REFERENCES test2(userID);
+
+SHOW INDEX FROM test3;
+
+CREATE TABLE test2
+( userID CHAR(8) NOT NULL PRIMARY KEY,
+  name VARCHAR(10) NOT NULL,
+  birthYear INT NOT NULL,
+  email CHAR(30) NULL UNIQUE
+);
+
+CREATE TABLE test2
+( userID CHAR(8) NOT NULL PRIMARY KEY,
+  name VARCHAR(10) NOT NULL,
+  birthYear INT NOT NULL,
+  email CHAR(30) NULL,
+  CONSTRAINT AK_email UNIQUE (email)
+);
+
+CREATE TABLE test4
+( userID CHAR(8) NOT NULL PRIMARY KEY,
+  name VARCHAR(10) NOT NULL,
+  birthYear INT NOT NULL,
+  mobile1 CHAR(3) NULL,
+  CONSTRAINT CK_name CHECK (name IS NOT NULL)
+);
+
+ALTER TABLE test4
+ADD CONSTRAINT CK_mobile1
+CHECK (mobile IN ('010','011','016','017','018','019'));
+
+CREATE TABLE test5
+( userID CHAR(8) NOT NULL PRIMARY KEY,
+  name VARCHAR(10) NOT NULL,
+  birthYear INT NOT NULL DEFAULT 2000,
+  addr CHAR(2) NOT NULL DEFAULT '서울',
+  mobile1 CHAR(3) NULL,
+  mobile2 HCAR(8) NULL,
+  height SMALLINT NULL DEFAULT 170,
+  mDate DATE NULL
+);
+
+ALTER TABLE test5
+	ALTER COLUMN birthYear SET DEFAULT 2000;
+ALTER TABLE test5
+	ALTER COLUMN addr SET DEFAULT '서울';
+ALTER TABLE test5
+	ALTER COLUMN height SET DEFAULT 170;
+
+INSERT INTO test5 VALUES ('abc','abc',default,default,'011','1234567',default,'2023.12.12');
+
+CREATE TEMPORARY TABLE [IF NOT EXISTS] 테이블이름
+( ... )
+
+DROP TABLE 테이블이름;
+
+DROP TABLE 테이블, 테이블2, 테이블3;
+
+ALTER TABLE 테이블이름
+	...;
+
+ALTER TABLE test5
+	ADD github VARCHAR(30) -- 열 추가
+    DEFAULT "https://github.com/ksh5324" -- 디폴트 값
+    NULL; -- 널 값 허용
+
+ALTER TABLE test5
+	DROP COLUMN mobile1;
+
+ALTER TABLE test5
+	CHANGE COLUMN name Uname VARCHAR(20) NULL;
+
+ALTER TABLE 테이블명
+ADD CONSTRAINT (제약조건) (컬럼명);
+
+ALTER TABLE 테이블명
+ADD CONSTRAINT foreign key 컬럼명 references 부모테이블명 컬럼 on delete cascade / on update cascade;
+
+ALTER TABLE test5
+	DROP CONSTRAINT 제약조건 
+    -- DROP 제약조건
